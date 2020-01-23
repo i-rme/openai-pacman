@@ -20,7 +20,8 @@ DEFAULT_TRAINING_PATH   = './results/'
 
 class PacMan:
     def __init__(self, network, mode, view):
-        self.env = gym.make(ENVIROMENT)
+        env_to_wrap = gym.make(ENVIROMENT)
+        self.env = wrappers.Monitor(env_to_wrap, './video', force=True)
         self.env.reset()
 
         print('\033[95m' + 'INFO: Using', network, 'on',ENVIROMENT + '\033[0m')
@@ -106,7 +107,7 @@ class PacMan:
                     if statistics:
                         pylab.plot(episodes, scores, 'b')
                         pylab.savefig(TRAINING_PATH + "pacman.png")
-                    
+
                     print('\033[92m' + 'INFO: Episode', e, "  Score", score, "  Memory Length", len(agent.memory), "  Epsilon", agent.epsilon, '\033[0m')
 
             # Save the model every 50 episodes if we are not in testing phase
